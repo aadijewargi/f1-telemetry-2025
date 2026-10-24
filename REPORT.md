@@ -118,3 +118,9 @@ Both are expressed as % against the field mean of the same drivers in each dry r
 Tools: tyre strategy (21 dry circuits), battery plan and racing line (20 circuits; wet rounds 1, 12, 13 and Azerbaijan lack usable traces), qualifying and winner prediction (24).
 
 Leave-one-round-out backtest: pole-sitter predicted in 6 of 20 dry rounds; qualifying-order rank correlation 0.72; the circuit adjustment adds nothing measurable; race winner top-1 5 of 21, top-3 19 of 21 (odds temperature-scaled, tau fit on the same backtest, so slightly flattering). Grid = qualifying order (penalties ignored). The battery plan is a physics optimiser and is not validated; the tyre model is a baseline (winner's plan in the top 10% in 19 of 21 races).
+
+### Finishing-order model (`src/f1_finish.py`)
+Linear fit of finishing position on expected race pace rank and predicted grid, Gaussian noise (robust sigma 3.3 positions) and per-driver retirement rates, simulated 4,000 times per race. Leave-one-round-out over 21 dry races: rank correlation 0.73 vs 0.72 for grid alone and 0.75 for pace alone, so it adds nothing over either baseline. About 2.0 of 3 podium finishers named per race; podium probabilities were somewhat too low for the likeliest drivers (predicted 60%, actual 78%).
+
+### Tests
+`python tests/test_core.py` (curvature, plan enumeration rules, battery-plan invariants, app-data consistency), plus the two export tests. GitHub Actions runs all three on push (`.github/workflows/tests.yml`).

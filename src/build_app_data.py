@@ -116,6 +116,7 @@ def main():
     ftc = pd.read_csv(TAB / "fullthrottle_curve.csv")
     a_fn, da_fn = fs.accel_curve(ftc)
     preds = json.load(open(OUT / "app_predictions.json"))
+    finish = json.load(open(OUT / "app_finish.json"))
     lines = pd.read_csv(TAB / "lines_corner_driver.csv")
 
     tracks = []
@@ -199,13 +200,15 @@ def main():
             t["flags"]["battery"] = True
         pr = preds.get(str(rnd))
         if pr and (pr.get("has_quali_model") or pr.get("has_race_model")):
+            if str(rnd) in finish:
+                pr["finish"] = finish[str(rnd)]
             t["predict"] = pr
             t["flags"]["predict"] = True
         tracks.append(t)
 
     meta = dict(
         generated="2025 season, OpenF1 data",
-        results={k: json.load(open(OUT / f"{k}_results.json")) for k in ("strategy", "predict")},
+        results={k: json.load(open(OUT / f"{k}_results.json")) for k in ("strategy", "predict", "finish")},
         battery_assumptions=dict(mass_kg=M, mguk_kw=fa.MGUK_KW, deploy_budgets_mj=[2, 4], harvest_cap_mj=2),
         drivers={k: v for k, v in team_by.items()})
     json.dump(dict(meta=meta, tracks=tracks), open(OUT / "app_data.json", "w"), separators=(",", ":"), default=float, allow_nan=False)

@@ -30,5 +30,6 @@ python src/f1_qrpace.py  f1_2025 analysis_out   # qualifying vs race pace by tea
 ```
 Run `f1_analysis.py` first (these read its output tables). Figures 12-20 and `results/` hold the outputs.
 
-## App
+## App and tests
 Open `app/index.html`. Rebuild: `python src/f1_predict.py ... && python src/build_app_data.py ... && python src/build_app.py`.
+Run tests: `python tests/test_core.py`

@@ -275,7 +275,7 @@ function cornerPanel(L,A,B){
    +'<div class="scroll"><table class="t"><tr><th></th><th style="color:var(--pos)">'+state.A+'</th><th style="color:var(--neg)">'+state.B+'</th><th>A−B</th></tr>'
    +row('Entry km/h',A.v[pre],B.v[pre],'',0)+row('Apex km/h',A.v[ia],B.v[ib],'',0)+row('Exit km/h',A.v[post],B.v[post],'',0)+row('Time in zone s',tA,tB,'',3)+'</table></div>'}
 function speedChart(L,A,B){
-  var W=900,H=250,pl=44,pr=10,pt=10,pb=26,n=L.n;
+  var W=(window.innerWidth<600?440:900),H=(window.innerWidth<600?260:250),pl=44,pr=10,pt=10,pb=26,n=L.n;
   var vmax=Math.ceil(Math.max.apply(null,A.v.concat(B.v))/50)*50,vmin=Math.floor(Math.min.apply(null,A.v.concat(B.v))/50)*50;
   function X(i){return pl+(W-pl-pr)*i/(n-1)}function Y(v){return pt+(H-pt-pb)*(1-(v-vmin)/(vmax-vmin))}
   var svg='<svg class="map" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Speed along the lap for both drivers">';
@@ -286,7 +286,7 @@ function speedChart(L,A,B){
   svg+=pl_(B,'var(--neg)')+pl_(A,'var(--pos)')+'</svg>';
   // time gap
   var gaps=A.t.map(function(t,i){return (B.t[i]-t)/100}),gm=Math.max(0.05,Math.ceil(Math.max.apply(null,gaps.map(Math.abs))*20)/20);
-  var H2=170,Y2=function(v){return pt+(H2-pt-pb)*(1-(v+gm)/(2*gm))};
+  var H2=(window.innerWidth<600?190:170),Y2=function(v){return pt+(H2-pt-pb)*(1-(v+gm)/(2*gm))};
   var s2='<svg class="map" viewBox="0 0 '+W+' '+H2+'" role="img" aria-label="Cumulative time gap along the lap"><line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y2(0)+'" y2="'+Y2(0)+'" stroke="var(--line)"/>';
   [gm,0,-gm].forEach(function(v){s2+='<text x="'+(pl-6)+'" y="'+(Y2(v)+4)+'" font-size="11" text-anchor="end">'+(v>0?'+':'')+v.toFixed(2)+'</text>'});
   s2+='<polyline fill="none" stroke="var(--accent)" stroke-width="2" points="'+gaps.map(function(v,i){return X(i).toFixed(1)+','+Y2(v).toFixed(1)}).join(' ')+'"/></svg>';
@@ -311,9 +311,14 @@ function predict(){
   h+='<div class="panel"><h3>Race winner chances</h3><div class="bars">';
   if(p.winner){var mw=p.winner[0].p;p.winner.forEach(function(w){h+='<div class="row"><span class="nm">'+name(w.driver)+'</span><span class="track"><span class="fill alt" style="display:block;width:'+Math.max(2,w.p/mw*100)+'%"></span></span><span class="v">'+Math.round(w.p*100)+'%</span></div>'})}
   h+='</div></div></div>';
+  if(p.finish){var F=p.finish.slice(0,12);
+    h+='<div class="panel" style="margin-top:14px"><h3>Predicted finishing order</h3><div class="bars q">';
+    F.forEach(function(f,i){h+='<div class="row"><span class="nm"><b class="mono">'+(i+1)+'</b> '+name(f.driver)+'</span><span class="track"><span class="fill alt" style="display:block;width:'+Math.max(2,f.p_podium*100)+'%"></span></span><span class="v">'+Math.round(f.p_podium*100)+'%</span><span class="g">P'+f.exp_pos.toFixed(1)+'</span></div>'});
+    h+='</div><p class="fine" style="margin:8px 0 0">Bars and percentages show the chance of a podium; the last column is the average finishing position over 4,000 simulated races, including retirements.'+(state.reveal?' Actual finishers: '+p.finish.filter(function(f){return f.actual}).sort(function(a,b){return a.actual-b.actual}).slice(0,5).map(function(f){return 'P'+f.actual+' '+name(f.driver)}).join(', ')+'.':'')+'</p></div>';}
   h+='<div class="panel reveal">'+(state.reveal?'<h3>What actually happened</h3><p class="sub" style="margin-top:0">'+(p.actual_quali_top3?'Qualified top three: <b>'+p.actual_quali_top3.map(name).join(', ')+'</b>. ':'No qualifying lap data for this race. ')+(p.actual_winner?'Won by <b>'+name(p.actual_winner)+'</b>.':'')+'</p><button class="btn ghost" data-reveal="0" style="margin-top:10px">Hide</button>':'<button class="btn" data-reveal="1">Show what actually happened</button>')+'</div>';
   h+='<details class="panel" open><summary>How far to trust this</summary><div class="fine" style="margin-top:10px"><p>Each driver\'s expected qualifying gap is their average in the other races, nudged for how corner-heavy the circuit is and how each team does in corners versus straights. Pole chances come from simulating that prediction with its own typical error ('+Q.sigma_pct.toFixed(2)+'% of a lap). The winner model combines expected race pace with grid position, using the predicted qualifying order as the grid. Its raw odds were far too confident, so they are flattened once with a factor fitted on the same checks, which makes the odds slightly flattering.</p>'
-   +'<p>Checked on the other races, one at a time: the real pole-sitter was predicted in <b class="mono">'+Q.pole_hits_adj+' of '+Q.rounds+'</b> dry races, and the whole qualifying order correlates about <b class="mono">'+Q.rho_adj.toFixed(2)+'</b> with the real one. The circuit adjustment adds nothing measurable here ('+Q.rho_base.toFixed(2)+' without it). The winner pick is right <b class="mono">'+Wn.top1+' of '+Wn.rounds+'</b> times and in the top three <b class="mono">'+Wn.top3+' of '+Wn.rounds+'</b>. With one season and four or five cars winning most races, this tells you the contenders and their odds, not a certain winner. Penalties, weather, strategy and safety cars are not modelled.</p></div></details>';
+   +'<p>Checked on the other races, one at a time: the real pole-sitter was predicted in <b class="mono">'+Q.pole_hits_adj+' of '+Q.rounds+'</b> dry races, and the whole qualifying order correlates about <b class="mono">'+Q.rho_adj.toFixed(2)+'</b> with the real one. The circuit adjustment adds nothing measurable here ('+Q.rho_base.toFixed(2)+' without it). The winner pick is right <b class="mono">'+Wn.top1+' of '+Wn.rounds+'</b> times and in the top three <b class="mono">'+Wn.top3+' of '+Wn.rounds+'</b>. With one season and four or five cars winning most races, this tells you the contenders and their odds, not a certain winner. Penalties, weather, strategy and safety cars are not modelled.</p>'
+   +(RES.finish?'<p>The finishing order uses expected race pace and grid position, with random noise and each driver\'s retirement rate. Across <b class="mono">'+RES.finish.rounds+'</b> races its order correlates <b class="mono">'+RES.finish.rho_model.toFixed(2)+'</b> with the real result, no better than using grid position alone (<b class="mono">'+RES.finish.rho_grid.toFixed(2)+'</b>) or race pace alone (<b class="mono">'+RES.finish.rho_pace.toFixed(2)+'</b>). On average it names <b class="mono">'+RES.finish.podium_hits_model.toFixed(1)+' of 3</b> podium finishers. Podium chances were a little too low for the likeliest drivers.</p>':'')+'</div></details>';
   return h}
 
 /* ---------- render ---------- */
