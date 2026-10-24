@@ -109,3 +109,12 @@ Both are expressed as % against the field mean of the same drivers in each dry r
   - No team is significant after correction, and the other teams are within ±0.15%.
 - Team tyre-age trends (seconds per lap of age, fuel-corrected, within round and compound): Mercedes 0.013 (best), McLaren 0.021, Red Bull 0.024, Ferrari 0.032, Alpine and Kick Sauber 0.039 (worst). They do not explain the race-minus-qualifying gap (Spearman 0.22, p = 0.53, 10 teams).
 - Circuit conditions (track temperature, street vs permanent) do not explain how widely the teams' gaps spread across a round (p = 0.15 and p = 0.98).
+
+## Part 4: Pitwall app and qualifying/winner predictor
+
+`app/index.html` is a single-file web app (open it in a browser; data is embedded). Build chain:
+`f1_predict.py` -> `build_app_data.py` -> `build_app.py` (template in `app/template.html`).
+
+Tools: tyre strategy (21 dry circuits), battery plan and racing line (20 circuits; wet rounds 1, 12, 13 and Azerbaijan lack usable traces), qualifying and winner prediction (24).
+
+Leave-one-round-out backtest: pole-sitter predicted in 6 of 20 dry rounds; qualifying-order rank correlation 0.72; the circuit adjustment adds nothing measurable; race winner top-1 5 of 21, top-3 19 of 21 (odds temperature-scaled, tau fit on the same backtest, so slightly flattering). Grid = qualifying order (penalties ignored). The battery plan is a physics optimiser and is not validated; the tyre model is a baseline (winner's plan in the top 10% in 19 of 21 races).

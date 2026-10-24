@@ -1,0 +1,35 @@
+{
+ "quali": {
+  "rounds": 20,
+  "sigma_pct": 0.5307649210651313,
+  "sd_pct": 1.742125409301139,
+  "rho_adj": 0.7180078350486073,
+  "rho_base": 0.717820057617327,
+  "pole_hits_adj": 6,
+  "pole_hits_base": 6,
+  "top3_adj": 2.15,
+  "top3_base": 2.15,
+  "mae_adj": 0.661311275706746,
+  "mae_base": 0.6600566891382825,
+  "adj_better_rho": 9,
+  "adj_worse_rho": 10,
+  "mean_prob_on_actual_pole": 0.2249375,
+  "pole_prob_top_hits": 6
+ },
+ "winner_temperature": {
+  "tau": 0.42499999999999993,
+  "logloss_before": 1.8932656600316435,
+  "logloss_after": 1.502263523254061
+ },
+ "winner": {
+  "rounds": 21,
+  "top1": 5,
+  "top3": 19,
+  "baseline_pace_pick": 5,
+  "pole_won": 15,
+  "pole_known": 20,
+  "mean_p_on_winner": 0.2508040360102537,
+  "mean_logloss": 1.502263523254061,
+  "uniform_logloss": 2.995732273553991
+ }
+}

@@ -1,0 +1,344 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Pitwall 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Concept: a pit-wall monitor. Quiet graphite ground, condensed signage type for headings, mono for every number,
+   one blue for the app, orange = deploy battery, aqua = harvest, tyre colours are the real compound colours. */
+:root{
+  --bg:#efefea; --surface:#fafaf7; --ink:#14161a; --ink2:#53585e; --muted:#868b91; --line:#d9d9d1; --line2:#e6e6df;
+  --accent:#2a78d6; --accent-ink:#ffffff; --deploy:#eb6834; --harvest:#14a06f; --warn:#b4540a; --warn-bg:#fbeedc;
+  --soft:#e5483a; --soft-ink:#fff; --medium:#f0c030; --medium-ink:#1c1c1c; --hard:#e4e4de; --hard-ink:#1c1c1c;
+  --ramp0:#cde2fb; --ramp1:#86b6ef; --ramp2:#3987e5; --ramp3:#256abf; --ramp4:#184f95; --ramp5:#0d366b;
+  --pos:#2a78d6; --neg:#eb6834; --track:#c9c9c0;
+  --f-head:"Barlow Condensed","Arial Narrow",system-ui,sans-serif; --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1013; --surface:#16191d; --ink:#ecebe5; --ink2:#b3b7bc; --muted:#7b8086; --line:#2a2e33; --line2:#202429;
+  --accent:#3987e5; --warn:#f0a35e; --warn-bg:#2a2016; --hard:#d6d6d0; --track:#3a3f45;
+  --ramp0:#184f95; --ramp1:#256abf; --ramp2:#3987e5; --ramp3:#6da7ec; --ramp4:#9ec5f4; --ramp5:#cde2fb; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1013; --surface:#16191d; --ink:#ecebe5; --ink2:#b3b7bc; --muted:#7b8086; --line:#2a2e33; --line2:#202429;
+  --accent:#3987e5; --warn:#f0a35e; --warn-bg:#2a2016; --hard:#d6d6d0; --track:#3a3f45;
+  --ramp0:#184f95; --ramp1:#256abf; --ramp2:#3987e5; --ramp3:#6da7ec; --ramp4:#9ec5f4; --ramp5:#cde2fb; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-head);font-weight:600;letter-spacing:.01em;margin:0;text-wrap:balance}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header.bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line);margin-bottom:22px}
+.brand{font-family:var(--f-head);font-weight:700;font-size:26px;letter-spacing:.04em;text-transform:uppercase;background:none;border:0;padding:0;display:flex;align-items:baseline;gap:8px}
+.brand small{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--muted);letter-spacing:0}
+nav.tools{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+nav.tools button{background:none;border:1px solid var(--line);border-radius:6px;padding:6px 12px;font-size:14px;color:var(--ink2)}
+nav.tools button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.hero{padding:30px 0 6px}
+.hero h1{font-size:clamp(38px,7vw,64px);line-height:1;text-transform:uppercase}
+.hero p{max-width:60ch;color:var(--ink2);margin:14px 0 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:28px}
+.card-btn{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;min-height:190px;transition:border-color .15s,transform .15s}
+.card-btn:hover{border-color:var(--ink2)}
+.card-btn h2{font-size:28px;text-transform:uppercase;line-height:1}
+.card-btn p{margin:0;color:var(--ink2);font-size:14px}
+.card-btn .pick{margin-top:auto;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.card-btn svg{width:100%;height:46px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.panel+.panel{margin-top:14px}
+.grid2>.panel+.panel{margin-top:0}
+.grid2>.panel.sticky{position:sticky;top:12px;align-self:start}
+.panel h3{font-size:22px;text-transform:uppercase;margin-bottom:10px}
+.pickrow{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:18px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+select{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;min-width:210px;max-width:100%}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{background:none;border:0;padding:8px 14px;color:var(--ink2);font-family:var(--f-mono);font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.grid2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px}
+@media (max-width:820px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.kicker{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.big{font-family:var(--f-head);font-weight:600;font-size:clamp(30px,5vw,44px);line-height:1.05;text-transform:uppercase}
+.sub{color:var(--ink2);margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:14px}
+.stat{border-top:2px solid var(--line);padding-top:6px}
+.stat b{display:block;font-family:var(--f-mono);font-weight:500;font-size:20px}
+.stat span{font-size:12px;color:var(--muted)}
+.note{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 14px}
+.fine{font-size:13px;color:var(--ink2)}
+.fine p{margin:0 0 8px}
+details{margin-top:14px}
+summary{cursor:pointer;font-family:var(--f-mono);font-size:12px;color:var(--ink2)}
+/* tyre strategy */
+.plan{padding:12px 0;border-top:1px solid var(--line2)}
+.plan:first-of-type{border-top:0}
+.stintbar{display:flex;gap:2px;height:38px}
+.stint{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:12px;border-radius:4px;min-width:0;overflow:hidden;white-space:nowrap}
+.stint.S{background:var(--soft);color:var(--soft-ink)} .stint.M{background:var(--medium);color:var(--medium-ink)} .stint.H{background:var(--hard);color:var(--hard-ink)}
+.planhead{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap}
+.planhead b{font-family:var(--f-head);font-size:20px;text-transform:uppercase;font-weight:600}
+.delta{font-family:var(--f-mono);font-size:13px;color:var(--ink2)}
+.pits{position:relative;height:16px;margin-top:3px}
+.pits i{position:absolute;font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--muted);transform:translateX(-50%);white-space:nowrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+/* maps and charts */
+svg.map{width:100%;height:auto;display:block}
+svg text{font-family:var(--f-mono);fill:var(--ink2)}
+.cornerdot{cursor:pointer}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:9px 0;border-top:1px solid var(--line2)}
+.list li:first-child{border-top:0}
+.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+.zn{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.bars .row{display:grid;grid-template-columns:minmax(0,170px) 1fr 44px;gap:10px;align-items:center;padding:5px 0;font-size:14px}
+.bars.q .row{grid-template-columns:minmax(0,170px) 1fr 40px 62px}
+.bars .g{font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:right}
+.bars .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bars .nm small{color:var(--muted);font-size:12px}
+.bars .track{height:12px;background:var(--line2);border-radius:3px;overflow:hidden}
+.bars .fill{height:100%;background:var(--accent);border-radius:3px}
+.bars .fill.alt{background:var(--deploy)}
+.bars .v{font-family:var(--f-mono);font-size:13px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:right;font-weight:400;padding:4px 6px;border-bottom:1px solid var(--line)}
+table.t th:first-child,table.t td:first-child{text-align:left}
+table.t td{padding:6px;text-align:right;border-bottom:1px solid var(--line2);font-family:var(--f-mono);font-size:13px}
+.scroll{overflow-x:auto}
+.empty{padding:40px 16px;text-align:center;color:var(--ink2)}
+.reveal{margin-top:12px}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:8px 14px;font-size:14px}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--ink2);margin-left:6px;vertical-align:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap" id="app"></div>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+var D = JSON.parse(document.getElementById('data').textContent);
+var T = D.tracks, RES = D.meta.results;
+var NAMES = {VER:"Max Verstappen",TSU:"Yuki Tsunoda",NOR:"Lando Norris",PIA:"Oscar Piastri",LEC:"Charles Leclerc",HAM:"Lewis Hamilton",
+ RUS:"George Russell",ANT:"Kimi Antonelli",ALO:"Fernando Alonso",STR:"Lance Stroll",GAS:"Pierre Gasly",COL:"Franco Colapinto",DOO:"Jack Doohan",
+ ALB:"Alexander Albon",SAI:"Carlos Sainz",HAD:"Isack Hadjar",LAW:"Liam Lawson",BEA:"Oliver Bearman",OCO:"Esteban Ocon",HUL:"Nico Hülkenberg",BOR:"Gabriel Bortoleto"};
+var CNAME = {S:"Soft",M:"Medium",H:"Hard"};
+var TOOLS = [
+ {id:"tyres", label:"Tyre strategy", need:"strategy", pick:"Pick a circuit", text:"The fastest pit-stop plans for a circuit, ranked, with the compound and length of every stint."},
+ {id:"battery", label:"Battery plan", need:"battery", pick:"Pick a circuit", text:"Where on the lap to spend the hybrid energy and where to recover it, drawn on the track."},
+ {id:"line", label:"Racing line", need:"line", pick:"Pick a circuit and two drivers", text:"Compare two drivers on the fastest qualifying lap: speed on the map, corner by corner."},
+ {id:"predict", label:"Qualifying and winner", need:"predict", pick:"Pick a circuit", text:"Predicted qualifying order, pole chances and race-winner chances, built only from the other races."}
+];
+var state = {tool:null, track:6, A:null, B:null, corner:null, budget:"4", reveal:false};
+var $app = document.getElementById('app');
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function trackById(id){for(var i=0;i<T.length;i++) if(T[i].id===id) return T[i]}
+function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function mix(c1,c2,t){function h(c){c=c.replace('#','');return [0,2,4].map(function(i){return parseInt(c.substr(i,2),16)})}
+  var a=h(c1),b=h(c2);return 'rgb('+a.map(function(v,i){return Math.round(v+(b[i]-v)*t)}).join(',')+')'}
+function ramp(t){t=Math.max(0,Math.min(1,t));var s=[0,1,2,3,4,5].map(function(i){return cssv('--ramp'+i)});var k=t*5,i=Math.min(4,Math.floor(k));return mix(s[i],s[i+1],k-i)}
+function fmtT(s){var m=Math.floor(s/60),r=s-m*60;return m+':'+(r<10?'0':'')+r.toFixed(3)}
+function name(d){return NAMES[d]||d}
+function opts(list,sel){return list.map(function(o){return '<option value="'+esc(o.v)+'"'+(o.v==sel?' selected':'')+(o.dis?' disabled':'')+'>'+esc(o.t)+'</option>'}).join('')}
+function trackOpts(need){return opts(T.map(function(t){var ok=t.flags[need];return {v:t.id,t:t.name+(ok?'':'  (no data)'),dis:!ok}}),state.track)}
+
+/* ---------- map geometry ---------- */
+function geom(xs,ys,W,H,pad){var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+  var s=Math.min((W-2*pad)/(x1-x0||1),(H-2*pad)/(y1-y0||1));var ox=(W-(x1-x0)*s)/2,oy=(H-(y1-y0)*s)/2;
+  return {px:function(x){return ox+(x-x0)*s},py:function(y){return H-(oy+(y-y0)*s)},s:s}}
+function segPath(g,xs,ys,a,b,n){var d='',i;for(i=a;i<=b+1;i++){var k=((i%n)+n)%n;d+=(i===a?'M':'L')+g.px(xs[k]).toFixed(1)+' '+g.py(ys[k]).toFixed(1)}return d}
+
+/* ---------- router ---------- */
+function go(tool){state.tool=tool;state.corner=null;state.reveal=false;try{history.replaceState(null,'',tool?'#'+tool:location.pathname)}catch(e){}render();window.scrollTo(0,0)}
+function header(){
+  var h='<header class="bar"><button class="brand" data-go="" aria-label="Home">Pitwall <small>2025 season</small></button>';
+  if(state.tool){h+='<nav class="tools" aria-label="Tools">'+TOOLS.map(function(t){return '<button data-go="'+t.id+'"'+(t.id===state.tool?' aria-current="true"':'')+'>'+t.label+'</button>'}).join('')+'</nav>'}
+  return h+'</header>'}
+function cardSvg(id){
+  var c={tyres:'<rect x="2" y="12" width="90" height="22" rx="4" fill="var(--hard)"/><rect x="96" y="12" width="60" height="22" rx="4" fill="var(--medium)"/><rect x="160" y="12" width="40" height="22" rx="4" fill="var(--soft)"/>',
+   battery:'<path d="M4 34 C30 34 30 10 60 10 S90 34 120 30 S170 8 198 14" fill="none" stroke="var(--track)" stroke-width="5" stroke-linecap="round"/><path d="M60 10 C74 10 84 24 96 30" fill="none" stroke="var(--deploy)" stroke-width="5" stroke-linecap="round"/><path d="M120 30 C140 30 150 20 160 14" fill="none" stroke="var(--harvest)" stroke-width="5" stroke-linecap="round"/>',
+   line:'<path d="M4 30 C40 6 70 6 100 24 S160 40 198 12" fill="none" stroke="var(--ramp1)" stroke-width="5" stroke-linecap="round"/><path d="M4 36 C44 14 72 12 100 30 S160 42 198 18" fill="none" stroke="var(--deploy)" stroke-width="3" stroke-linecap="round"/>',
+   predict:'<rect x="2" y="4" width="150" height="9" rx="3" fill="var(--accent)"/><rect x="2" y="19" width="104" height="9" rx="3" fill="var(--accent)" opacity=".7"/><rect x="2" y="34" width="62" height="9" rx="3" fill="var(--accent)" opacity=".45"/>'};
+  return '<svg viewBox="0 0 202 46" aria-hidden="true">'+c[id]+'</svg>'}
+function home(){
+  var h='<div class="hero"><h1>What do you want<br>to predict?</h1><p>Built from every lap of the 2025 Formula 1 season. Choose a question, then a circuit. Every answer comes with how far to trust it.</p></div><div class="cards">';
+  TOOLS.forEach(function(t){h+='<button class="card-btn" data-go="'+t.id+'">'+cardSvg(t.id)+'<h2>'+t.label+'</h2><p>'+t.text+'</p><span class="pick">'+t.pick+' →</span></button>'});
+  return h+'</div><p class="fine" style="margin-top:22px">Circuits that were rained on, and Azerbaijan (no qualifying traces), are unavailable in tools that need dry data. Predictions use the other 23 races, so the result for a circuit never includes that circuit.</p>'}
+function trackHead(need,extra){
+  var t=trackById(state.track);
+  return '<div class="pickrow"><div class="field"><label for="trk">Circuit</label><select id="trk">'+trackOpts(need)+'</select></div>'+(extra||'')+'</div>'}
+
+/* ---------- 1. tyre strategy ---------- */
+function stintBar(p,laps){
+  var cum=0,pits='';
+  var bar=p.stints.map(function(s,i){var w=s.laps/laps*100;var out='<div class="stint '+s.c+'" style="width:'+w+'%" title="'+CNAME[s.c]+', '+s.laps+' laps">'+(w>13?CNAME[s.c]+' '+s.laps:s.c+s.laps)+'</div>';cum+=s.laps;if(i<p.stints.length-1)pits+='<i style="left:'+(cum/laps*100)+'%">lap '+cum+'</i>';return out}).join('');
+  return '<div class="stintbar">'+bar+'</div><div class="pits">'+pits+'</div>'}
+function tyres(){
+  var t=trackById(state.track);var h=trackHead('strategy');
+  if(!t.strategy) return h+'<div class="panel empty">No tyre-strategy model for this circuit (wet race).</div>';
+  var s=t.strategy,best=s.plans[0],R=RES.strategy.strategy_backtest;
+  var names=best.stints.map(function(x){return CNAME[x.c]+' '+x.laps}).join(' → ');
+  var cum=0,stops=best.stints.slice(0,-1).map(function(x){cum+=x.laps;return cum});
+  h+='<div class="panel"><div class="kicker">Recommended plan · '+s.laps+' laps</div><div class="big">'+best.stops+'-stop: '+names+'</div>'
+   +'<p class="sub">Start on '+CNAME[best.stints[0].c]+' and pit on lap '+stops.join(' and lap ')+'. No other legal plan tested is predicted to be faster.</p>';
+  h+='<div style="margin-top:16px">'+stintBar(best,s.laps)+'</div>'
+   +'<div class="stats"><div class="stat"><b>'+s.pit_loss_s.toFixed(1)+' s</b><span>time lost per stop here</span></div>'
+   +'<div class="stat"><b>'+s.track_c.toFixed(0)+' °C</b><span>track temperature</span></div>'
+   +(s.margin_other_stops_s!=null?'<div class="stat"><b>+'+s.margin_other_stops_s.toFixed(1)+' s</b><span>cost of using a different number of stops</span></div>':'')+'</div></div>';
+  h+='<div class="panel"><h3>All options, ranked</h3>';
+  s.plans.forEach(function(p,i){var nm=p.stints.map(function(x){return CNAME[x.c][0]+x.laps}).join(' · ');
+    h+='<div class="plan"><div class="planhead"><b>'+p.stops+' stop'+(p.stops>1?'s':'')+' · '+p.stints.map(function(x){return CNAME[x.c]}).join(' → ')+'</b><span class="delta">'+(i===0?'fastest':'+'+p.delta_s.toFixed(1)+' s')+'</span></div>'+stintBar(p,s.laps)+'</div>'});
+  h+='<div class="legend"><span><i style="background:var(--soft)"></i>Soft</span><span><i style="background:var(--medium)"></i>Medium</span><span><i style="background:var(--hard)"></i>Hard</span><span>Same lap scale on every bar</span></div></div>';
+  if(s.actual){h+='<div class="panel"><h3>What the winner did</h3><p class="sub" style="margin-top:0"><b>'+name(s.winner)+'</b> won on <span class="mono">'+esc(s.actual).replace(/ &gt; /g,' → ')+'</span>. In the model\'s race simulation that plan is '+(s.actual_gap_s<1?'about equal to':'<b class="mono">'+s.actual_gap_s.toFixed(1)+' s</b> slower than')+' the recommendation, and it ranks in the top <span class="mono">'+Math.max(1,Math.ceil(s.actual_rank_pct))+'%</span> of all plans tried.</p></div>'}
+  h+='<details class="panel" open><summary>How far to trust this</summary><div class="fine" style="margin-top:10px"><p>A lap-time model learned from the other 20 dry races predicts the cost of tyre age and fuel at this circuit, then every legal 1, 2 and 3-stop plan is simulated. The race itself is simulated without traffic, safety cars or undercuts.</p>'
+   +'<p>Checked against the '+R.rounds_with_winner+' dry race winners: the winner\'s plan ranked in the top 10% of simulated plans in '+R.winner_top10pct+' races, but the model matched the winner\'s number of stops in only '+R.stops_match+' of '+R.rounds_with_winner+', barely better than always guessing one stop ('+R.winner_one_stop+'). It picks one stop at '+R.model_one_stop+' of '+R.rounds+' circuits. Treat the output as a clean baseline, not a race-day call.</p></div></details>';
+  return h}
+
+/* ---------- 2. battery plan ---------- */
+function nearCorner(line,i){var c=null;line.corners.forEach(function(k){if(k.b<=i) c=k});var nx=null;for(var j=0;j<line.corners.length;j++){if(line.corners[j].a>i){nx=line.corners[j];break}}
+  if(!c&&!nx) return '';return (c?'after corner '+c.k:'after the start line')+(nx?', before corner '+nx.k:'')}
+function battery(){
+  var t=trackById(state.track);
+  var extra='<div class="field"><label>Deployment budget</label><div class="seg" role="group" aria-label="Deployment budget"><button data-budget="4" aria-pressed="'+(state.budget==="4")+'">4 MJ per lap</button><button data-budget="2" aria-pressed="'+(state.budget==="2")+'">2 MJ per lap</button></div></div>';
+  var h=trackHead('battery',extra);
+  if(!t.battery) return h+'<div class="panel empty">No battery plan for this circuit (wet race, or no qualifying traces).</div>';
+  var b=t.battery,L=t.line,n=L.n,dep=b.deploy[state.budget],hz=b.harvest;
+  var xs=L.drivers[b.ref].x,ys=L.drivers[b.ref].y,W=700,H=470,g=geom(xs,ys,W,H,24);
+  var svg='<svg class="map" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Track map with battery deploy and harvest zones"><path d="'+segPath(g,xs,ys,0,n-1,n)+'" fill="none" stroke="var(--track)" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>';
+  dep.segments.forEach(function(s){svg+='<path d="'+segPath(g,xs,ys,s.a,s.b,n)+'" fill="none" stroke="var(--deploy)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>'});
+  var zi=0;hz.zones.forEach(function(z){if(z.selected){zi++;svg+='<path d="'+segPath(g,xs,ys,z.a,z.b,n)+'" fill="none" stroke="var(--harvest)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>'}});
+  svg+='<circle cx="'+g.px(xs[0])+'" cy="'+g.py(ys[0])+'" r="6" fill="var(--ink)" stroke="var(--surface)" stroke-width="2"/><text x="'+(g.px(xs[0])+10)+'" y="'+(g.py(ys[0])-8)+'" font-size="11">start / finish</text>';
+  L.corners.forEach(function(k){var x=g.px(xs[k.apex]),y=g.py(ys[k.apex]);svg+='<text x="'+x+'" y="'+y+'" font-size="12" text-anchor="middle" dy="-12" style="fill:var(--ink2)">'+k.k+'</text>'});
+  svg+='</svg>';
+  h+='<div class="grid2"><div class="panel sticky"><div class="kicker">'+esc(t.circuit)+' · fastest qualifying lap by '+b.ref+' · numbers mark detected corners</div>'+svg
+   +'<div class="legend"><span><i style="background:var(--deploy)"></i>Deploy battery</span><span><i style="background:var(--harvest)"></i>Harvest (recover) energy</span><span><i style="background:var(--track)"></i>Rest of lap</span></div></div>';
+  h+='<div><div class="panel"><div class="kicker">Estimated lap time saved</div><div class="big">'+dep.gain_s.toFixed(1)+' s</div><p class="sub">by spending '+dep.energy_mj.toFixed(1)+' MJ where it counts, against '+dep.unplanned_gain_s.toFixed(1)+' s if the same energy is spent from the start of the lap.</p></div>';
+  h+='<div class="panel"><h3>Deploy here</h3><ul class="list">';
+  var segs=dep.segments.slice().sort(function(a,b){return a.a-b.a});
+  segs.forEach(function(s,i){h+='<li><span class="swatch" style="background:var(--deploy)"></span><span>'+Math.round(s.a*L.step_m)+'–'+Math.round((s.b+1)*L.step_m)+' m<br><span class="zn">'+nearCorner(L,s.a)+'</span></span><span class="mono">'+Math.round(s.kj)+' kJ<br><span class="zn">+'+s.gain.toFixed(2)+' s</span></span></li>'});
+  h+='</ul></div>';
+  h+='<div class="panel"><h3>Recover here</h3><ul class="list">';
+  var sel=hz.zones.filter(function(z){return z.selected}).sort(function(a,b){return a.a-b.a});
+  sel.forEach(function(z){h+='<li><span class="swatch" style="background:var(--harvest)"></span><span>braking from '+Math.round(z.v_in)+' to '+Math.round(z.v_out)+' km/h<br><span class="zn">at '+Math.round(z.a*L.step_m)+' m · '+nearCorner(L,z.a).replace(/^after.*?, /,'')+'</span></span><span class="mono">'+(z.cap_mj*1000).toFixed(0)+' kJ</span></li>'});
+  h+='</ul><p class="fine" style="margin:10px 0 0">Braking at 120 kW can recover about <b class="mono">'+hz.capturable_mj.toFixed(1)+' MJ</b> on this lap'+(hz.cap_reached?', so the 2 MJ limit is reached.':', below the 2 MJ limit, so recover in every zone listed.')+'</p></div></div></div>';
+  h+='<details class="panel"><summary>How far to trust this</summary><div class="fine" style="margin-top:10px"><p>This is an optimiser, not a trained model, and it has not been checked against real battery data: public telemetry has no battery-charge channel. Extra energy is valued by how much faster the car gets and how long that speed lasts before the next braking zone, using the measured full-throttle acceleration curve. Energy goes to the best-value metres first, at up to 120 kW.</p><p>Treat the ranking of where to deploy as more reliable than the absolute seconds, which depend on the assumed car mass ('+D.meta.battery_assumptions.mass_kg+' kg) and ignore tyre and temperature limits, the MGU-H and braking-point changes.</p></div></details>';
+  return h}
+
+/* ---------- 3. racing line ---------- */
+function lineView(){
+  var t=trackById(state.track),L=t.line;
+  var drv=L?Object.keys(L.drivers):[];
+  if(L&&(!state.A||drv.indexOf(state.A)<0)){state.A=drv[0];state.B=drv[1]}
+  if(L&&state.B===state.A){state.B=drv.filter(function(d){return d!==state.A})[0]}
+  var extra=L?'<div class="field"><label for="drvA">Driver A</label><select id="drvA">'+opts(drv.map(function(d){return {v:d,t:name(d)+' · '+fmtT(L.drivers[d].lap_s)}}),state.A)+'</select></div><div class="field"><label for="drvB">Driver B</label><select id="drvB">'+opts(drv.map(function(d){return {v:d,t:name(d)+' · '+fmtT(L.drivers[d].lap_s)}}),state.B)+'</select></div>':'';
+  var h=trackHead('line',extra);
+  if(!L) return h+'<div class="panel empty">No racing-line data for this circuit (wet race, or no qualifying traces).</div>';
+  var A=L.drivers[state.A],B=L.drivers[state.B],n=L.n,W=700,H=470,g=geom(A.x,A.y,W,H,24);
+  var dv=A.v.map(function(v,i){return v-B.v[i]});
+  var svg='<svg class="map" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Track coloured by speed difference between the two drivers">';
+  for(var i=0;i<n;i++){var j=(i+1)%n;var tt=Math.max(-1,Math.min(1,((dv[i]+dv[j])/2)/12));
+    var col=Math.abs(tt)<0.08?'var(--track)':(tt>0?mix(cssv('--track').length===7?cssv('--track'):'#c9c9c0',cssv('--pos').length===7?cssv('--pos'):'#2a78d6',Math.min(1,tt*1.1)):mix(cssv('--track').length===7?cssv('--track'):'#c9c9c0',cssv('--neg').length===7?cssv('--neg'):'#eb6834',Math.min(1,-tt*1.1)));
+    svg+='<line x1="'+g.px(A.x[i]).toFixed(1)+'" y1="'+g.py(A.y[i]).toFixed(1)+'" x2="'+g.px(A.x[j]).toFixed(1)+'" y2="'+g.py(A.y[j]).toFixed(1)+'" stroke="'+col+'" stroke-width="9" stroke-linecap="round"/>'}
+  L.corners.forEach(function(k){var x=g.px(A.x[k.apex]),y=g.py(A.y[k.apex]);var sel=state.corner===k.k;
+    svg+='<g class="cornerdot" data-corner="'+k.k+'" tabindex="0" role="button" aria-label="Corner '+k.k+'"><circle cx="'+x+'" cy="'+y+'" r="13" fill="'+(sel?'var(--ink)':'var(--surface)')+'" stroke="var(--ink)" stroke-width="1.5"/><text x="'+x+'" y="'+(y+4)+'" font-size="11" text-anchor="middle" style="fill:'+(sel?'var(--bg)':'var(--ink)')+'">'+k.k+'</text></g>'});
+  svg+='</svg>';
+  var dt=A.lap_s-B.lap_s;
+  h+='<div class="grid2"><div class="panel sticky"><div class="kicker">'+esc(t.circuit)+' · fastest qualifying laps · click a corner</div>'+svg
+   +'<div class="legend"><span><i style="background:var(--pos)"></i>'+state.A+' faster</span><span><i style="background:var(--neg)"></i>'+state.B+' faster</span><span><i style="background:var(--track)"></i>within about 1 km/h</span></div></div>';
+  h+='<div><div class="panel"><div class="kicker">Lap time gap</div><div class="big">'+(dt<0?state.A:state.B)+' by '+Math.abs(dt).toFixed(3)+' s</div><p class="sub">'+name(state.A)+' '+fmtT(A.lap_s)+' · '+name(state.B)+' '+fmtT(B.lap_s)+'</p></div>';
+  h+='<div class="panel" id="cornerpanel">'+cornerPanel(L,A,B)+'</div></div></div>';
+  h+='<div class="panel"><h3>Speed along the lap</h3>'+speedChart(L,A,B)+'</div>';
+  h+='<details class="panel"><summary>How far to trust this</summary><div class="fine" style="margin-top:10px"><p>Position is sampled about every 20 m, so lines are smoothed and differences of a few metres are not resolved; speed differences and apex speeds are the reliable part. Corners are the sharpest speed drops (at least 10 km/h) on the fastest lap, numbered in lap order, so they will not match official turn numbers.</p><p>Across the season, driver averages differ by about 7 km/h at the same corners, and only one teammate pair (Verstappen vs Tsunoda) is clearly separated after correcting for multiple comparisons.</p></div></details>';
+  return h}
+function cornerPanel(L,A,B){
+  if(!state.corner) return '<h3>Corner detail</h3><p class="fine" style="margin:0">Click a numbered corner on the map to see both lines and apex speeds.</p>';
+  var k=L.corners.filter(function(c){return c.k===state.corner})[0],n=L.n;var kb=k.b<k.a?k.b+n:k.b;
+  function idx(a,b){var r=[];for(var i=a-3;i<=b+3;i++)r.push(((i%n)+n)%n);return r}
+  var ix=idx(k.a,kb),W=360,H=240;
+  var xs=[],ys=[];ix.forEach(function(i){xs.push(A.x[i],B.x[i]);ys.push(A.y[i],B.y[i])});
+  var g=geom(xs,ys,W,H,22);
+  function path(D){return ix.map(function(i,m){return (m?'L':'M')+g.px(D.x[i]).toFixed(1)+' '+g.py(D.y[i]).toFixed(1)}).join('')}
+  function apex(D){var best=k.a;for(var i=k.a;i<=kb;i++)if(D.v[i%n]<D.v[best%n])best=i;return best%n}
+  var ia=apex(A),ib=apex(B);
+  var svg='<svg class="map" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Both driving lines through corner '+k.k+'"><path d="'+path(B)+'" fill="none" stroke="var(--neg)" stroke-width="3" stroke-linecap="round"/><path d="'+path(A)+'" fill="none" stroke="var(--pos)" stroke-width="3" stroke-linecap="round"/>'
+   +'<circle cx="'+g.px(A.x[ia])+'" cy="'+g.py(A.y[ia])+'" r="5" fill="var(--pos)" stroke="var(--surface)" stroke-width="2"/><circle cx="'+g.px(B.x[ib])+'" cy="'+g.py(B.y[ib])+'" r="5" fill="var(--neg)" stroke="var(--surface)" stroke-width="2"/></svg>';
+  var pre=(k.a-3+n)%n,post=(kb+3)%n;
+  function row(lbl,fa,fb,unit,dec){var d=fa-fb;return '<tr><td>'+lbl+'</td><td>'+fa.toFixed(dec)+unit+'</td><td>'+fb.toFixed(dec)+unit+'</td><td>'+(d>0?'+':'')+d.toFixed(dec)+'</td></tr>'}
+  var tA=(A.t[kb%n]-A.t[k.a]+(kb>=n?A.t[n-1]*0+0:0))/100,tB=(B.t[kb%n]-B.t[k.a])/100;if(tA<0)tA+=A.lap_s;if(tB<0)tB+=B.lap_s;
+  return '<h3>Corner '+k.k+' · '+(k.dir==='L'?'left':'right')+'-hander</h3>'+svg
+   +'<div class="scroll"><table class="t"><tr><th></th><th style="color:var(--pos)">'+state.A+'</th><th style="color:var(--neg)">'+state.B+'</th><th>A−B</th></tr>'
+   +row('Entry km/h',A.v[pre],B.v[pre],'',0)+row('Apex km/h',A.v[ia],B.v[ib],'',0)+row('Exit km/h',A.v[post],B.v[post],'',0)+row('Time in zone s',tA,tB,'',3)+'</table></div>'}
+function speedChart(L,A,B){
+  var W=900,H=250,pl=44,pr=10,pt=10,pb=26,n=L.n;
+  var vmax=Math.ceil(Math.max.apply(null,A.v.concat(B.v))/50)*50,vmin=Math.floor(Math.min.apply(null,A.v.concat(B.v))/50)*50;
+  function X(i){return pl+(W-pl-pr)*i/(n-1)}function Y(v){return pt+(H-pt-pb)*(1-(v-vmin)/(vmax-vmin))}
+  var svg='<svg class="map" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Speed along the lap for both drivers">';
+  for(var v=vmin;v<=vmax;v+=50){svg+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="var(--line2)"/><text x="'+(pl-6)+'" y="'+(Y(v)+4)+'" font-size="11" text-anchor="end">'+v+'</text>'}
+  var step=Math.ceil(L.length_m/5/500)*500;for(var m=0;m<L.length_m;m+=step){var x=X(m/L.length_m*(n-1));svg+='<text x="'+x+'" y="'+(H-8)+'" font-size="11" text-anchor="middle">'+m+' m</text>'}
+  L.corners.forEach(function(k){svg+='<text x="'+X(k.apex)+'" y="'+(pt+9)+'" font-size="10" text-anchor="middle" style="fill:var(--muted)">'+k.k+'</text>'});
+  function pl_(D,c){return '<polyline fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" points="'+D.v.map(function(v,i){return X(i).toFixed(1)+','+Y(v).toFixed(1)}).join(' ')+'"/>'}
+  svg+=pl_(B,'var(--neg)')+pl_(A,'var(--pos)')+'</svg>';
+  // time gap
+  var gaps=A.t.map(function(t,i){return (B.t[i]-t)/100}),gm=Math.max(0.05,Math.ceil(Math.max.apply(null,gaps.map(Math.abs))*20)/20);
+  var H2=170,Y2=function(v){return pt+(H2-pt-pb)*(1-(v+gm)/(2*gm))};
+  var s2='<svg class="map" viewBox="0 0 '+W+' '+H2+'" role="img" aria-label="Cumulative time gap along the lap"><line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y2(0)+'" y2="'+Y2(0)+'" stroke="var(--line)"/>';
+  [gm,0,-gm].forEach(function(v){s2+='<text x="'+(pl-6)+'" y="'+(Y2(v)+4)+'" font-size="11" text-anchor="end">'+(v>0?'+':'')+v.toFixed(2)+'</text>'});
+  s2+='<polyline fill="none" stroke="var(--accent)" stroke-width="2" points="'+gaps.map(function(v,i){return X(i).toFixed(1)+','+Y2(v).toFixed(1)}).join(' ')+'"/></svg>';
+  return svg+'<div class="legend"><span><i style="background:var(--pos)"></i>'+state.A+'</span><span><i style="background:var(--neg)"></i>'+state.B+'</span><span>km/h</span></div>'
+   +'<h3 style="margin-top:18px">Time gap along the lap</h3><p class="fine" style="margin:0 0 4px">Above zero: '+state.A+' is ahead (seconds).</p>'+s2}
+
+/* ---------- 4. qualifying and winner ---------- */
+function predict(){
+  var t=trackById(state.track),h=trackHead('predict'),p=t.predict;
+  if(!p) return h+'<div class="panel empty">No prediction for this circuit.</div>';
+  var Q=RES.predict.quali,Wn=RES.predict.winner;
+  var top=p.quali?p.quali[0]:null,win=p.winner?p.winner[0]:null;
+  if(p.wet) {}
+  if(t.wet) h+='<p class="note">Rain affected this race. The model assumes dry conditions, so treat this as the dry-weather expectation.</p>';
+  h+='<div class="grid2"><div class="panel"><div class="kicker">Predicted pole position</div>'+(top?'<div class="big">'+name(top.driver)+'</div><p class="sub">'+top.team+' · about <b class="mono">'+Math.round(top.p_pole*100)+'%</b> chance of pole.</p>':'<p class="sub">Not available.</p>')+'</div>'
+   +'<div class="panel"><div class="kicker">Predicted race winner</div>'+(win?'<div class="big">'+name(win.driver)+'</div><p class="sub">about <b class="mono">'+Math.round(win.p*100)+'%</b> chance. The winner has been one of the top three picks in '+Wn.top3+' of '+Wn.rounds+' races.</p>':'<p class="sub">Not available.</p>')+'</div></div>';
+  h+='<div class="grid2" style="margin-top:14px">';
+  h+='<div class="panel"><h3>Qualifying order</h3><div class="bars q">';
+  if(p.quali){var mx=Math.max.apply(null,p.quali.map(function(q){return q.p_pole}));
+    p.quali.forEach(function(q,i){h+='<div class="row"><span class="nm"><b class="mono">'+(i+1)+'</b> '+name(q.driver)+'</span><span class="track"><span class="fill" style="display:block;width:'+Math.max(2,q.p_pole/mx*100)+'%"></span></span><span class="v">'+Math.round(q.p_pole*100)+'%</span><span class="g">'+(i?'+'+q.gap_s.toFixed(2)+' s':'—')+'</span></div>'})}
+  h+='</div><p class="fine" style="margin:8px 0 0">Bars and percentages show the chance of pole; the last column is the predicted time behind the first car.</p></div>';
+  h+='<div class="panel"><h3>Race winner chances</h3><div class="bars">';
+  if(p.winner){var mw=p.winner[0].p;p.winner.forEach(function(w){h+='<div class="row"><span class="nm">'+name(w.driver)+'</span><span class="track"><span class="fill alt" style="display:block;width:'+Math.max(2,w.p/mw*100)+'%"></span></span><span class="v">'+Math.round(w.p*100)+'%</span></div>'})}
+  h+='</div></div></div>';
+  h+='<div class="panel reveal">'+(state.reveal?'<h3>What actually happened</h3><p class="sub" style="margin-top:0">'+(p.actual_quali_top3?'Qualified top three: <b>'+p.actual_quali_top3.map(name).join(', ')+'</b>. ':'No qualifying lap data for this race. ')+(p.actual_winner?'Won by <b>'+name(p.actual_winner)+'</b>.':'')+'</p><button class="btn ghost" data-reveal="0" style="margin-top:10px">Hide</button>':'<button class="btn" data-reveal="1">Show what actually happened</button>')+'</div>';
+  h+='<details class="panel" open><summary>How far to trust this</summary><div class="fine" style="margin-top:10px"><p>Each driver\'s expected qualifying gap is their average in the other races, nudged for how corner-heavy the circuit is and how each team does in corners versus straights. Pole chances come from simulating that prediction with its own typical error ('+Q.sigma_pct.toFixed(2)+'% of a lap). The winner model combines expected race pace with grid position, using the predicted qualifying order as the grid. Its raw odds were far too confident, so they are flattened once with a factor fitted on the same checks, which makes the odds slightly flattering.</p>'
+   +'<p>Checked on the other races, one at a time: the real pole-sitter was predicted in <b class="mono">'+Q.pole_hits_adj+' of '+Q.rounds+'</b> dry races, and the whole qualifying order correlates about <b class="mono">'+Q.rho_adj.toFixed(2)+'</b> with the real one. The circuit adjustment adds nothing measurable here ('+Q.rho_base.toFixed(2)+' without it). The winner pick is right <b class="mono">'+Wn.top1+' of '+Wn.rounds+'</b> times and in the top three <b class="mono">'+Wn.top3+' of '+Wn.rounds+'</b>. With one season and four or five cars winning most races, this tells you the contenders and their odds, not a certain winner. Penalties, weather, strategy and safety cars are not modelled.</p></div></details>';
+  return h}
+
+/* ---------- render ---------- */
+function render(){
+  var h=header();
+  if(!state.tool) h+=home();
+  else h+={tyres:tyres,battery:battery,line:lineView,predict:predict}[state.tool]();
+  $app.innerHTML=h;
+}
+$app.addEventListener('click',function(e){
+  var el=e.target.closest('[data-go],[data-budget],[data-corner],[data-reveal]');if(!el) return;
+  if(el.hasAttribute('data-go')) return go(el.getAttribute('data-go')||null);
+  if(el.hasAttribute('data-budget')){state.budget=el.getAttribute('data-budget');return render()}
+  if(el.hasAttribute('data-corner')){state.corner=+el.getAttribute('data-corner');return render()}
+  if(el.hasAttribute('data-reveal')){state.reveal=el.getAttribute('data-reveal')==='1';return render()}
+});
+$app.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.matches('.cornerdot')){e.preventDefault();state.corner=+e.target.getAttribute('data-corner');render()}});
+$app.addEventListener('change',function(e){
+  if(e.target.id==='trk'){state.track=+e.target.value;state.corner=null;state.A=null;state.reveal=false;render()}
+  if(e.target.id==='drvA'){state.A=e.target.value;state.corner=null;render()}
+  if(e.target.id==='drvB'){state.B=e.target.value;state.corner=null;render()}
+});
+try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render)}catch(e){}
+try{new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']})}catch(e){}
+var h0=(location.hash||'').replace('#','');if(TOOLS.some(function(t){return t.id===h0})) state.tool=h0;
+render();
+})();
+</script>

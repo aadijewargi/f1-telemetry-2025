@@ -29,3 +29,6 @@ python src/f1_thermal.py f1_2025 analysis_out   # brake-disc thermal model, tyre
 python src/f1_qrpace.py  f1_2025 analysis_out   # qualifying vs race pace by team
 ```
 Run `f1_analysis.py` first (these read its output tables). Figures 12-20 and `results/` hold the outputs.
+
+## App
+Open `app/index.html`. Rebuild: `python src/f1_predict.py ... && python src/build_app_data.py ... && python src/build_app.py`.
