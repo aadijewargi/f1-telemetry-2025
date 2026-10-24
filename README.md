@@ -15,3 +15,9 @@ python src/make_figs.py analysis_out                         # extra figures
 
 ## Assumptions
 Start fuel 100 kg and car mass are assumed; electrical quantities are inferred from speed data (no electrical channel is public); speed is sampled at ~3.7 Hz.
+
+## Predictive models (part 2)
+```
+python src/f1_strategy.py f1_2025 analysis_out
+```
+Tyre lap-time model, pit-loss estimate, strategy optimiser (backtested against race winners), pit-window classifier, and a physics-based battery harvest/deploy planner. See the second half of [REPORT.md](REPORT.md) for results and honest limitations.

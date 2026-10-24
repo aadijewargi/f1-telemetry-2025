@@ -38,3 +38,33 @@ Lateral acceleration a = v^2 x curvature from smoothed X,Y; 97th-percentile enve
 - Fuel mass estimated from acceleration change is far too noisy to use (IQR 55-128 kg); not reported as a result.
 - A coast-down drag fit was tried and dropped: coasting samples include lift-and-coast, harvesting and brake-flag lag.
 - Miami has about 33 of 57 laps; Azerbaijan has no qualifying traces; Spain lacks Stroll.
+
+---
+
+# Part 2: predictive models for tyre strategy and battery use
+
+Run with `python src/f1_strategy.py f1_2025 analysis_out` (after `f1_analysis.py`). Everything below is validated leave-one-round-out: each circuit is predicted by a model that never saw it.
+
+## A. Tyre strategy
+
+**Lap-time model.** A gradient-boosted regressor (monotone in tyre age and fuel burn) predicts a lap's delta to the driver's own median from compound, tyre age, race progress and circuit descriptors (track and air temperature, base lap time, mean/top speed, braking energy). 20,858 dry representative laps.
+- Held-out RMSE 0.82 s vs 1.08 s for predicting zero (R^2 0.42). A plain linear age/fuel model gets 0.81 s (R^2 0.45): **boosting does not beat the linear model on RMSE**. It tracks per-circuit age trends slightly better (correlation 0.62 vs 0.54, mean error 0.023 vs 0.025 s per lap, 46 round-compound pairs). Circuit differences in tyre wear are only weakly predictable from 21 circuits.
+- The "trend with tyre age" includes fuel burn-off because age and lap number rise together, so many observed slopes are negative.
+
+**Pit loss.** From 478 in/out-lap pairs: median 22.5 s, ranging 18.5 s (Dutch) to 28.7 s (Emilia Romagna).
+
+**Strategy optimiser.** For every dry round it simulates all legal 1-, 2- and 3-stop plans (at least two compounds, stints within the observed tyre-age envelope: soft 28, medium 35, hard 44 laps) and picks the fastest simulated race time.
+- Backtest vs what the race winner actually did (21 dry rounds): the winner's plan ranked in the top 10% of all simulated plans in 19 of 21 rounds (median rank: top 0.7%) and was a median 9.3 s (mean 14.2 s) slower than the model's pick in simulation; within 5 s in 6 rounds, within 10 s in 11.
+- Stop count: the model picked a one-stop 20 times out of 21 (two-stop at Monaco); winners one-stopped 12 times. It matched the winner's stop count in 13 of 21, **barely better than always guessing one stop (12 of 21)**. Winners' extra stops came from safety cars, traffic and undercuts that the simulation ignores (Canada, with five stops, is the 65 s outlier).
+- The model's picks lean on the longest allowed hard stint, so the stint-length caps matter as much as the learned lap-time trend. Treat the output as a baseline plan, not a race-day call.
+
+**Pit-window classifier.** Predicts whether a driver pits within the next 3 laps from compound, tyre age, race progress, laps left, stint number, recent pace loss within the stint, safety-car flag and track temperature (22,506 laps, 8.2% positive).
+- Leave-one-round-out AUC **0.83** (median per-round 0.88), vs 0.73 using tyre age and compound alone. Brier score 0.062 vs 0.075 for always predicting the base rate. Pace loss and safety-car flags carry real signal.
+
+## B. Battery harvest and deploy plan (physics-based optimiser, not machine learning)
+There is no state-of-charge channel in public telemetry, so this is an optimisation grounded in measured acceleration, not a trained model, and it cannot be validated against real battery data.
+
+- Marginal benefit of extra energy at each full-throttle sample = extra speed (dE / m v) that decays along the straight according to the measured full-throttle acceleration curve, converted to time saved to the end of that straight. Energy is allocated greedily to the highest benefit per joule, within the 120 kW limit and an energy budget, on each circuit's fastest qualifying lap (20 dry circuits).
+- Estimated lap time saved by deployment: **3.1 s per lap for a 4 MJ budget (2.0 s for 2 MJ)**, best at Miami (4.0 s) and worst at Monaco (2.1 s). Planning where to spend it beats spending the same energy from the start of the lap by about 0.6 s (4 MJ) or 0.8 s (2 MJ), and beats spreading it evenly by 0.7 s (4 MJ) or 0.8 s (2 MJ).
+- Harvest: capturable braking energy under the 120 kW limit averages 1.5 MJ per lap (0.97 to 2.31 MJ), so the 2 MJ cap is reached on only 3 of 20 circuits (Singapore, USA, Las Vegas). Harvest is power-limited, so the plan is to harvest in every braking zone (median 7 zones; 6.8 needed on average), ranked by capturable energy, with the largest single zone giving 14-31% of the total. Per-circuit zones are in `battery_plans.json`.
+- Limits: no electrical measurements; ignores braking-point shift after deployment, tyre/temperature limits and the MGU-H; absolute seconds depend on the assumed mass (810 kg) and the smoothed acceleration curve, so use the ranking and relative gains more than the absolute values.

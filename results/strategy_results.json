@@ -1,0 +1,69 @@
+{
+ "laptime_model": {
+  "n": 20858,
+  "rmse_gbm": 0.8223071718407752,
+  "rmse_lin": 0.80536017961018,
+  "rmse_zero": 1.0837295090030346,
+  "r2_gbm": 0.4242008399036161,
+  "r2_lin": 0.4476896574057865,
+  "slope_corr_gbm": 0.6234699756736546,
+  "slope_corr_lin": 0.5432243448631734,
+  "slope_mae_gbm": 0.023498146167301327,
+  "slope_mae_lin": 0.024569583806559266,
+  "slope_pairs": 46
+ },
+ "pit_loss": {
+  "median_s": 22.475499999999982,
+  "min_round_s": 18.504500000000007,
+  "max_round_s": 28.739499999999992,
+  "n_stops": 478
+ },
+ "max_stint_laps": {
+  "SOFT": 28,
+  "MEDIUM": 35,
+  "HARD": 44
+ },
+ "strategy_backtest": {
+  "rounds": 21,
+  "rounds_with_winner": 21,
+  "stops_match": 13,
+  "model_one_stop": 20,
+  "model_two_stop": 1,
+  "model_three_stop": 0,
+  "winner_one_stop": 12,
+  "winner_two_stop": 7,
+  "winner_three_plus": 2,
+  "gap_median_s": 9.251694508759051,
+  "gap_mean_s": 14.248152357144564,
+  "within_5s": 6,
+  "within_10s": 11,
+  "winner_top10pct": 19,
+  "rank_pct_median": 0.7009642222786096
+ },
+ "pit_window": {
+  "n": 22506,
+  "base_rate": 0.08153381320536746,
+  "auc_full": 0.8323957783133368,
+  "auc_age_compound_only": 0.7273319240305198,
+  "brier_full": 0.06196970554533156,
+  "brier_climatology": 0.07488605050955972,
+  "auc_by_round_median": 0.8831798831798832
+ },
+ "battery": {
+  "rounds": 20,
+  "gain_opt_2MJ_mean_s": 2.047223437837169,
+  "gain_spread_2MJ_mean_s": 1.2138116467027733,
+  "gain_first_2MJ_mean_s": 1.219261130241207,
+  "gain_opt_4MJ_mean_s": 3.109446383934764,
+  "gain_spread_4MJ_mean_s": 2.410955242959772,
+  "gain_first_4MJ_mean_s": 2.5266475721566586,
+  "opt_vs_spread_4MJ_mean_s": 0.6984911409749917,
+  "zones_needed_median": 7.0,
+  "zones_median": 7.0,
+  "cap_reached_rounds": 3,
+  "best_event": "Miami Grand Prix",
+  "best_gain": 3.994455163835542,
+  "worst_event": "Monaco Grand Prix",
+  "worst_gain": 2.12753495473831
+ }
+}
