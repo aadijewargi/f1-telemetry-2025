@@ -1,0 +1,210 @@
+{
+ "wet_rounds": [
+  1,
+  12,
+  13
+ ],
+ "laps_total": 26265,
+ "laps_representative": 22514,
+ "laps_rep_dry_telemetry": 20832,
+ "laps_neutralised": 1936,
+ "pace_rounds": 21,
+ "fuel_laptime_s_per_lap": {
+  "mean": -0.05357608967229773,
+  "lo": -0.06172140380509244,
+  "hi": -0.045430775539503025,
+  "p": 1.2309924988469955e-11,
+  "rounds": 21
+ },
+ "tyre_deg_SOFT": {
+  "mean": 0.054822277330609605,
+  "lo": 0.032073254414201086,
+  "hi": 0.07757130024701812,
+  "rounds": 12
+ },
+ "tyre_deg_MEDIUM": {
+  "mean": 0.04647453354069719,
+  "lo": 0.03371399710186968,
+  "hi": 0.05923506997952469,
+  "rounds": 21
+ },
+ "tyre_deg_HARD": {
+  "mean": 0.03447930879444896,
+  "lo": 0.02293884592888992,
+  "hi": 0.046019771660007994,
+  "rounds": 20
+ },
+ "pace_resid_sd_s": 0.5772520922470082,
+ "top_drivers": [
+  {
+   "Driver": "PIA",
+   "pace_pct": -1.1067388857796951
+  },
+  {
+   "Driver": "NOR",
+   "pace_pct": -1.0932168235616817
+  },
+  {
+   "Driver": "VER",
+   "pace_pct": -0.9866929131774095
+  }
+ ],
+ "teammate_pairs_tested": 10,
+ "teammate_pairs_p05": 4,
+ "teammate_pairs_holm05": 3,
+ "energy": {
+  "rounds": 21,
+  "Ebrake_MJ_median": 10.677772707231037,
+  "Ebrake_MJ_min": 8.66593072166495,
+  "Ebrake_MJ_max": 14.820116194625996,
+  "Ebrake_max_event": "Azerbaijan Grand Prix",
+  "Ebrake_min_event": "Dutch Grand Prix",
+  "ratio_to_cap_median": 5.338886353615519,
+  "power_limited_rounds": 10,
+  "cap_limited_rounds": 11,
+  "brake_time_s_median": 16.840000630500008,
+  "ft_time_s_median": 45.48859188416511,
+  "deploy_full_power_s": 33.333333333333336,
+  "rec_full_power_s": 16.666666666666668,
+  "KEgain_over_Ebrake": 1.2192820168823482,
+  "power_limited_events": [
+   "Japanese Grand Prix",
+   "Saudi Arabian Grand Prix",
+   "Emilia Romagna Grand Prix",
+   "Spanish Grand Prix",
+   "Canadian Grand Prix",
+   "Austrian Grand Prix",
+   "Italian Grand Prix",
+   "S\u00e3o Paulo Grand Prix",
+   "Qatar Grand Prix",
+   "Abu Dhabi Grand Prix"
+  ],
+  "cap_limited_events": [
+   "Chinese Grand Prix",
+   "Bahrain Grand Prix",
+   "Miami Grand Prix",
+   "Monaco Grand Prix",
+   "Hungarian Grand Prix",
+   "Dutch Grand Prix",
+   "Azerbaijan Grand Prix",
+   "Singapore Grand Prix",
+   "United States Grand Prix",
+   "Mexico City Grand Prix",
+   "Las Vegas Grand Prix"
+  ]
+ },
+ "circuit_type_counts": {
+  "Permanent": 15,
+  "Temporary - Street": 6
+ },
+ "circuit_type_Ebrake_median": {
+  "Permanent": 10.363557681108782,
+  "Temporary - Street": 11.696335262345677
+ },
+ "street_vs_permanent": {
+  "street_n": 6,
+  "perm_n": 15,
+  "street_mean": 11.786427697618237,
+  "perm_mean": 10.321911647221036,
+  "welch_t": 1.505822371431871,
+  "welch_p": 0.17864163855023024,
+  "mannwhitney_p": 0.15369305616983636,
+  "cohen_d": 0.8972839879284609
+ },
+ "Ebrake_vs_topspeed": {
+  "r": 0.15251535662238888,
+  "p": 0.5092572356572099,
+  "n": 21
+ },
+ "Ebrake_vs_zones": {
+  "r": 0.2237677206101662,
+  "p": 0.3295197471498354
+ },
+ "fullthrottle": {
+  "a_g_at_150": 1.2679630513611548,
+  "a_g_at_200": 0.8148664748700664,
+  "a_g_at_250": 0.3888678001231931,
+  "a_g_at_300": 0.07013906310514198,
+  "Pkin_at_200_kW": 386.8692338196026,
+  "Pkin_at_250_kW": 229.26931487291168,
+  "Pkin_at_300_kW": 49.36195380382158,
+  "Pkin_peak_kW": 455.40651825817133,
+  "Pkin_peak_at_kph": 155,
+  "speed_where_a_below_0p01g_kph": 335
+ },
+ "mguk": {
+  "rpm_min": 10440.359281437126,
+  "rpm_max": 12855.03488372093,
+  "torque_at_120kW_min_Nm": 89.1413831721908,
+  "torque_at_120kW_max_Nm": 109.75825250564654
+ },
+ "drs": {
+  "rounds": 21,
+  "dCdA_m2": 0.374196133151217,
+  "lo": 0.3324633747125985,
+  "hi": 0.41592889158983554,
+  "dF_kN": 1.377665713988041,
+  "dF_lo": 1.2360373929219506,
+  "dF_hi": 1.5192940350541315,
+  "dA_ms2_mean": 1.6169407319065314,
+  "r_vs_topspeed": -0.6624861796140473,
+  "p_vs_topspeed": 0.0010669230051949532,
+  "lowest": {
+   "Event": "Las Vegas Grand Prix",
+   "dCdA_m2": 0.1770133165571886
+  },
+  "highest": {
+   "Event": "Austrian Grand Prix",
+   "dCdA_m2": 0.5075802592559692
+  }
+ },
+ "fuel": {
+  "n_estimates": 368,
+  "median_race_fuel_kg": 92.21330685748902,
+  "ci_lo": 83.52755433210115,
+  "ci_hi": 95.57541605874113,
+  "iqr_lo": 54.96468427839989,
+  "iqr_hi": 127.93524756162549,
+  "per_round_median_min": 26.645908136896146,
+  "per_round_median_max": 163.2478084699569,
+  "burn_kg_per_lap_median": 1.467315131501099,
+  "rounds_with_estimate": 20,
+  "seconds_per_kg": 0.03651300836616337
+ },
+ "lateral": {
+  "samples": 94752,
+  "p99_alat_g": 5.738330101935701,
+  "max_alat_p999_g": 6.715999987177345,
+  "p99_brake_decel_g": 4.580963185772618,
+  "p99_accel_g": 1.347873778121941,
+  "rounds_fitted": 6,
+  "rounds_good_fit": 2,
+  "r2_median": 0.1356502102336975,
+  "mu_median": 2.5969025513966573,
+  "mu_min": 1.9656973041713959,
+  "mu_max": 3.2281077986219184,
+  "CLA_median_m2": 1.3420293869694322,
+  "CLA_min": 1.234667071520124,
+  "CLA_max": 1.4493917024187404,
+  "CLA_min_event": "Chinese Grand Prix",
+  "CLA_max_event": "Las Vegas Grand Prix"
+ },
+ "lateral_pooled": {
+  "mu_g": 3.2520977486762055,
+  "mu_ci": [
+   3.0285459667549857,
+   3.492302592349252
+  ],
+  "CLA_m2": 1.881650147165782,
+  "CLA_ci": [
+   1.515130180545835,
+   2.1494216302517795
+  ],
+  "r2": 0.8965442184693317,
+  "downforce_to_weight_at_250kph": 0.6594304152313593,
+  "grip_at_100_g": 3.5952228956814087,
+  "grip_at_250_g": 5.396629917458725,
+  "rho": 1.1544915803682592,
+  "rounds": 20
+ }
+}

@@ -1,0 +1,5 @@
+f1env/
+__pycache__/
+*.pyc
+f1_2025/
+analysis_out/
