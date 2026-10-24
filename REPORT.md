@@ -68,3 +68,44 @@ There is no state-of-charge channel in public telemetry, so this is an optimisat
 - Estimated lap time saved by deployment: **3.1 s per lap for a 4 MJ budget (2.0 s for 2 MJ)**, best at Miami (4.0 s) and worst at Monaco (2.1 s). Planning where to spend it beats spending the same energy from the start of the lap by about 0.6 s (4 MJ) or 0.8 s (2 MJ), and beats spreading it evenly by 0.7 s (4 MJ) or 0.8 s (2 MJ).
 - Harvest: capturable braking energy under the 120 kW limit averages 1.5 MJ per lap (0.97 to 2.31 MJ), so the 2 MJ cap is reached on only 3 of 20 circuits (Singapore, USA, Las Vegas). Harvest is power-limited, so the plan is to harvest in every braking zone (median 7 zones; 6.8 needed on average), ranked by capturable energy, with the largest single zone giving 14-31% of the total. Per-circuit zones are in `battery_plans.json`.
 - Limits: no electrical measurements; ignores braking-point shift after deployment, tyre/temperature limits and the MGU-H; absolute seconds depend on the assumed mass (810 kg) and the smoothed acceleration curve, so use the ranking and relative gains more than the absolute values.
+
+---
+
+# Part 3: racing lines, brake and tyre thermals, qualifying vs race pace
+
+Scripts: `f1_lines.py`, `f1_thermal.py`, `f1_qrpace.py` (run after `f1_analysis.py`). Qualifying-trace work covers 20 dry circuits (wet rounds and Azerbaijan, which has no traces, are excluded).
+
+## A. Racing lines and the g-g diagram
+Each driver's fastest qualifying lap is resampled onto a common distance grid (one point per 20 m). Corners are found on the fastest lap as stretches with curvature radius below 400 m; every lap is then split into corner and straight time.
+- Corners are 49% of the distance but 59% of lap time.
+- Time against the field mean in the same round, averaged over 20 rounds (negative = faster; figure 14):
+  - McLaren gains most in corners (-0.70 s per lap) and also on the straights (-0.23 s).
+  - Mercedes gains in corners (-0.40 s) but is average on the straights (-0.01 s).
+  - Williams is the clearest low-drag car: faster on the straights (-0.13 s, CI -0.20 to -0.06) and slower in corners (+0.17 s, CI 0.06 to 0.26).
+  - Aston Martin is slow in both (corners +0.42 s, straights +0.30 s), and Kick Sauber loses mainly in corners (+0.45 s).
+  - Across teams, corner and straight time are correlated (r = 0.71): the fast cars are fast everywhere.
+- Apex speed at the same corners (141 corners, 2,796 driver-corner samples), against the field mean: Piastri +3.9 km/h and Norris +3.7 km/h are fastest through the middle of corners, Stroll -3.3 km/h slowest. The spread between driver means is 7.2 km/h; the corner-to-corner scatter is 5.2 km/h. In teammate pairs 8 of 14 differ at p < 0.05, but only Verstappen vs Tsunoda (+2.9 km/h) survives Holm correction.
+- g-g envelope (98th percentile of total acceleration, by direction and speed class): about 6.5 g of cornering above 220 km/h versus 3.5 g below 120 km/h, and about 5.1 g of braking at high speed. This is the aero-grip effect seen directly.
+- Friction-circle utilisation (share of the envelope used above 1.5 g) is 0.64 to 0.67 for every driver, with overlapping confidence intervals: it does **not** separate drivers.
+- Limits: positions are sampled every 20 m, so curvature is noisy. The per-corner minimum-radius ("how wide the line is") is in `lines_corner_driver.csv` but too noisy to interpret; apex speed is the metric to trust.
+
+## B. Brake disc and tyre thermal models
+**Brake disc.** A lumped heat balance for one front disc (mass 1.4 kg, carbon heat capacity rising with temperature, convective cooling that grows with speed, radiation), driven by friction-brake power: deceleration power minus aerodynamic drag minus MGU-K recovery (120 kW up to 2 MJ per lap), 60% to the front axle. Solved to lap-periodic steady state on each circuit's fastest qualifying lap.
+- Disc mass, area, drag area and the front-brake share are assumptions, and there is no public brake-temperature channel. The cooling scale is calibrated so the median circuit's mean disc temperature is 600 C, so **absolute temperatures are not predictions; the ranking between circuits is the result**.
+- Friction brakes absorb a median 74% of the braking energy (7.9 MJ per lap).
+- Hottest circuits: Singapore (peak 924 C), Canada (919), Mexico City (885), Austria (866). Coolest: Japan (585), Qatar (598), Netherlands (653). Typical temperature swing within a lap is about 360 C.
+- The ranking is robust: across nine parameter variations (drag area, disc mass, cooling, front share) its Spearman correlation with the baseline is at least 0.98. Peak temperature correlates with friction energy per lap (r = 0.74).
+
+**Tyre load.** A physics-motivated index per circuit (sum of squared total g times distance, plus a heating-rate and a high-g share proxy) was tested against each circuit's observed tyre degradation.
+- **Null result.** None of the 15 correlations (3 compounds x 5 features, 12-20 circuits) is significant; the best is r = 0.22 (p = 0.36, Holm 1.0). The load index for medium tyres has r = 0.13, and track temperature r = 0.11.
+- Likely reasons: only 20 circuits, degradation slopes that also carry fuel and traffic effects, and a load index built from low-fuel qualifying laps instead of race stints. It does not show that tyre wear is unrelated to cornering load.
+
+## C. Qualifying pace vs race pace
+Both are expressed as % against the field mean of the same drivers in each dry round (20 rounds, 376 driver-rounds).
+- Team ordering is almost identical in the two sessions (Spearman 0.94, p < 0.001); McLaren leads both.
+- Race pace minus qualifying pace per team (positive = slower in the race):
+  - Racing Bulls +0.40% (p = 0.009, but 0.09 after Holm correction, so only suggestive), better in the race in just 4 of 20 rounds.
+  - Aston Martin -0.50%, but the interval is very wide (-2.1 to +0.4%) because of a few outlier qualifying laps.
+  - No team is significant after correction, and the other teams are within ±0.15%.
+- Team tyre-age trends (seconds per lap of age, fuel-corrected, within round and compound): Mercedes 0.013 (best), McLaren 0.021, Red Bull 0.024, Ferrari 0.032, Alpine and Kick Sauber 0.039 (worst). They do not explain the race-minus-qualifying gap (Spearman 0.22, p = 0.53, 10 teams).
+- Circuit conditions (track temperature, street vs permanent) do not explain how widely the teams' gaps spread across a round (p = 0.15 and p = 0.98).

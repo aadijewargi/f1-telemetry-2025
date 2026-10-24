@@ -1,0 +1,33 @@
+{
+ "brake_cooling_scale": 2.024509620666503,
+ "brake": {
+  "circuits": 20,
+  "cooling_scale": 2.024509620666503,
+  "peak_median_C": 776.4204104635775,
+  "peak_min_C": 585.1011722887407,
+  "peak_max_C": 923.5144094561682,
+  "hottest": "Singapore Grand Prix",
+  "coolest": "Japanese Grand Prix",
+  "swing_median_C": 358.78015952526727,
+  "frac_above_800_max": 0.5084364454443194,
+  "friction_MJ_median": 7.933094459185696,
+  "friction_share_of_braking_energy": 0.7418060263287718,
+  "rank_spearman_min": 0.9819548872180449,
+  "rank_spearman_median": 0.9954887218045112,
+  "r_peak_vs_brakeenergy": 0.7441952288453919,
+  "r_peak_vs_airtemp": 0.5129684483545496
+ },
+ "tyre": {
+  "circuits": 20,
+  "tests": 15,
+  "best_feature": "high_g_share",
+  "best_compound": "MEDIUM",
+  "best_r": 0.21692514347568922,
+  "best_p": 0.35827385216323415,
+  "best_p_holm": 1.0,
+  "sig_after_holm": 0,
+  "r_load_medium": 0.1331060237774,
+  "r_track_medium": 0.10774739810438162,
+  "r_load_hard": -0.1305114140357682
+ }
+}

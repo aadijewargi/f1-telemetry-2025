@@ -1,0 +1,34 @@
+{
+ "teams": {
+  "rounds": 20,
+  "teams": 10,
+  "rank_spearman": 0.9393939393939393,
+  "rank_p": 5.4840529985136686e-05,
+  "best_race_vs_quali": "Aston Martin",
+  "best_delta": -0.5026060394827714,
+  "worst_race_vs_quali": "Racing Bulls",
+  "worst_delta": 0.4043103715253446,
+  "significant_holm": [],
+  "n_p05": 1
+ },
+ "tyre_link": {
+  "teams": 10,
+  "spearman": 0.22424242424242422,
+  "p": 0.5334005612725947,
+  "lowest_trend": "Mercedes",
+  "highest_trend": "Alpine"
+ },
+ "conditions": {
+  "r_spread_vs_tracktemp": -0.3367690097320282,
+  "p_tracktemp": 0.14652607795390887,
+  "spread_street": 0.6351121635935553,
+  "spread_permanent": 0.6262853097710839,
+  "p_street": 0.9833791251311369,
+  "n_street": 5,
+  "n_perm": 15
+ },
+ "drivers": {
+  "n": 376,
+  "corr_quali_race": 0.32984393565407955
+ }
+}

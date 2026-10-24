@@ -1,0 +1,33 @@
+{
+ "rounds": 20,
+ "zone_split": {
+  "corner_share_of_lap_mean": 0.5860557699146263,
+  "corner_frac_distance_mean": 0.48882103871999316,
+  "r_corner_vs_straight": 0.7140048132461209,
+  "most_corner_strong": "McLaren",
+  "most_straight_strong": "McLaren"
+ },
+ "apex": {
+  "corners": 141,
+  "samples": 2796,
+  "apex_sd_kph": 5.215242137773371,
+  "driver_spread_kph": 7.192978741972491,
+  "fastest_apex_driver": "PIA",
+  "slowest_apex_driver": "STR",
+  "teammate_pairs": 14,
+  "teammate_p05": 8,
+  "teammate_holm05": 1
+ },
+ "gg": {
+  "samples": 94752,
+  "peak_total_g_p99": 5.813647220057533,
+  "env_high_lat_g": 6.497975905807138,
+  "env_low_lat_g": 3.50363070409833,
+  "env_brake_g": 5.084779069324594,
+  "util_top": "RUS",
+  "util_top_val": 0.670589661714793,
+  "util_bottom": "DOO",
+  "util_bottom_val": 0.6384666586768006,
+  "util_spread": 0.032123003037992315
+ }
+}

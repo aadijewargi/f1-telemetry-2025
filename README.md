@@ -21,3 +21,11 @@ Start fuel 100 kg and car mass are assumed; electrical quantities are inferred f
 python src/f1_strategy.py f1_2025 analysis_out
 ```
 Tyre lap-time model, pit-loss estimate, strategy optimiser (backtested against race winners), pit-window classifier, and a physics-based battery harvest/deploy planner. See the second half of [REPORT.md](REPORT.md) for results and honest limitations.
+
+## More analyses (part 3)
+```
+python src/f1_lines.py   f1_2025 analysis_out   # racing lines, corner vs straight time, g-g diagram
+python src/f1_thermal.py f1_2025 analysis_out   # brake-disc thermal model, tyre load index
+python src/f1_qrpace.py  f1_2025 analysis_out   # qualifying vs race pace by team
+```
+Run `f1_analysis.py` first (these read its output tables). Figures 12-20 and `results/` hold the outputs.

@@ -1,0 +1,10 @@
+,spearman_vs_baseline
+baseline,1.0
+drag area -30%,0.9984962406015038
+drag area +30%,0.9954887218045112
+disc mass -30%,0.9909774436090225
+disc mass +30%,0.9819548872180449
+cooling -30%,0.9954887218045112
+cooling +30%,0.9954887218045112
+front share 50%,1.0
+front share 70%,1.0
